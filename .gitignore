@@ -1,0 +1,9 @@
+*.user
+*.user.*
+moc_*
+Makefile
+*.o
+*.a
+.idea
+cmake-build-*
+.vs
