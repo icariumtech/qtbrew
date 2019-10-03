@@ -4,5 +4,6 @@
         <file>qml/main.qml</file>
         <file>qml/ProcessView.qml</file>
         <file>qml/SetPoint.qml</file>
+        <file>images/brewerycontroller.png</file>
     </qresource>
 </RCC>

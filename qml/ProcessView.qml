@@ -4,26 +4,26 @@ Item {
     Row {
         id: column
         anchors.horizontalCenter: parent.horizontalCenter
-        spacing: 50
+        spacing: 75
 
         Kettle {
             id: boil
             kettleName: "Boil"
             liquidColor: "red"
-            liquidVolumn: 5
+            liquidVolumn: 0
         }
 
         Kettle {
             id: mash_tun
             kettleName: "Mash Tun"
             liquidColor: "burlywood"
-            liquidVolumn: 15
+            liquidVolumn: 0
         }
 
         Kettle {
             id: hlt
             kettleName: "HLT"
-            liquidVolumn: 10
+            liquidVolumn: 0
         }
     }
 }

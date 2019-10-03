@@ -3,55 +3,7 @@ import QtQuick.Controls 2.12
 import QtQuick.Controls.Universal 2.12
 
 Item {
-//    Rectangle {
-//        anchors.fill: parent
-//        color: "#00000000"
-//        radius: 10
-//        border.color: Universal.foreground
-//        border.width: 1
-//        Rectangle {
-//            anchors.left: parent.left
-//            anchors.right: parent.horizontalCenter
-//            anchors.rightMargin: 5
-//            anchors.top: parent.top
-//            anchors.bottom: parent.bottom
-//            color: Universal.foreground
-//            radius: 10
-//        }
-
-//        Rectangle {
-//            height: parent.height * .75
-//            width: parent.height * .75
-//            rotation: 45
-//            anchors.horizontalCenter: parent.horizontalCenter
-//            anchors.verticalCenter: parent.verticalCenter
-//            anchors.horizontalCenterOffset: -10
-//            color: Universal.foreground
-//        }
-
-//        Text {
-//            id: currentTemp
-//            anchors.left: parent.left
-//            anchors.right: parent.horizontalCenter
-//            anchors.verticalCenter: parent.verticalCenter
-//            color: Universal.background
-//            horizontalAlignment: Qt.AlignHCenter
-//            font.pointSize: 14
-//            text: "57" + "\xB0 F"
-//        }
-
-//        Text {
-//            id: setPoint
-//            anchors.left: parent.horizontalCenter
-//            anchors.right: parent.right
-//            anchors.verticalCenter: parent.verticalCenter
-//            color: Universal.foreground
-//            horizontalAlignment: Qt.AlignHCenter
-//            font.pointSize: 14
-//            text: "76"  + "\xB0 F"
-//        }
-//    }
-
+    layer.enabled: true
     Rectangle {
         anchors.fill: parent
         color: "#00000000"
@@ -84,7 +36,7 @@ Item {
             color: Universal.background
             verticalAlignment: Qt.AlignVCenter
             font.pixelSize: parent.height / 2 - 10
-            text: "57" + "\xB0 F"
+            text: "--" + "\xB0 F"
         }
 
         Text {
@@ -95,7 +47,7 @@ Item {
             color: Universal.foreground
             verticalAlignment: Qt.AlignVCenter
             font.pixelSize: parent.height / 2 - 10
-            text: "76"  + "\xB0 F"
+            text: "--"  + "\xB0 F"
         }
     }
 

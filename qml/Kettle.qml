@@ -10,7 +10,9 @@ Item {
     property string kettleName
 
     width: 125
-    height: 250
+    height: 275
+
+    layer.enabled: true
 
     ColumnLayout {
         anchors.fill: parent
