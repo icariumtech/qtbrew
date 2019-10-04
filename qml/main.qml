@@ -15,6 +15,8 @@ ApplicationWindow {
 
     Image {
         id: splash
+        anchors.bottom: parent.bottoms
+        anchors.bottomMargin: 10
         source: "qrc:///images/brewerycontroller.png"
     }
 
