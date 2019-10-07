@@ -5,5 +5,7 @@
         <file>qml/ProcessView.qml</file>
         <file>qml/SetPoint.qml</file>
         <file>images/brewerycontroller.png</file>
+        <file>qml/SetPointDialog.qml</file>
+        <file>qml/AutoScroller.qml</file>
     </qresource>
 </RCC>

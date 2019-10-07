@@ -1,9 +1,12 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.12
-import QtQuick.Controls.Universal 2.12
+import QtQuick.Controls.Material 2.12
 
 Item {
-    property var mainColor: Universal.foreground
+    id: setpoint
+    signal clicked()
+
+    property var mainColor: Material.foreground
 
     layer.enabled: true
 
@@ -11,7 +14,7 @@ Item {
         id: button
         anchors.fill: parent
         anchors.margins: 5
-        color: Universal.background
+        color: Material.background
         radius: 10
         border.color: mainColor
         border.width: 1
@@ -39,7 +42,7 @@ Item {
             anchors.top: parent.top
             anchors.bottom: parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
-            color: Universal.background
+            color: Material.background
             verticalAlignment: Qt.AlignVCenter
             font.pixelSize: parent.height / 2 - 10
             text: "--" + "\xB0 F"
@@ -60,10 +63,13 @@ Item {
     MouseArea {
         anchors.fill: parent
         onPressed: {
-            mainColor = Universal.accent
+            mainColor = Material.accent
         }
         onReleased: {
-            mainColor = Universal.foreground
+            mainColor = Material.foreground
+        }
+        onClicked: {
+            setpoint.clicked()
         }
     }
 }

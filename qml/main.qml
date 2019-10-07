@@ -2,7 +2,9 @@ import QtQuick 2.12
 import QtQuick.Window 2.12
 import QtQuick.VirtualKeyboard 2.4
 import QtQuick.Controls 2.12
-import QtQuick.Controls.Universal 2.12
+import QtQuick.Controls.Material 2.12
+import QtQuick.Dialogs 1.2
+import QtQuick.Layouts 1.12
 
 ApplicationWindow {
     id: window
@@ -11,12 +13,12 @@ ApplicationWindow {
     height: 480
     title: qsTr("Qt Brew")
 
-    Universal.theme: Universal.Dark
+    Material.theme: Material.Dark
+    Material.accent: Material.Green
 
     Image {
         id: splash
-        anchors.bottom: parent.bottoms
-        anchors.bottomMargin: 10
+        y: -40
         source: "qrc:///images/brewerycontroller.png"
     }
 
@@ -25,78 +27,58 @@ ApplicationWindow {
         anchors.fill: parent
         opacity: 0
 
-        Item {
-            id: sideView
-            width: 200
+        Pane {
+            id: navigation
+            width: 50
             anchors.left: parent.left
             anchors.top: parent.top
             anchors.bottom: parent.bottom
-
-            Rectangle {
-                id: sizeViewVDivider
-                anchors.top: parent.top
-                anchors.bottom: parent.bottom
-                anchors.right: parent.right
-                width: 1
-                color: Universal.foreground
-            }
-
-            Item {
-                id: buttonPanel
-                height: 75
-                anchors.top: parent.top
-                anchors.left: parent.left
-                anchors.right: sizeViewVDivider.left
-            }
-
-            Rectangle {
-                id: sideViewHDivider
-                anchors.top: buttonPanel.bottom
-                anchors.left: parent.left
-                anchors.right: parent.right
-                height: 1
-                color: Universal.foreground
-            }
-
-            Item {
-                id: recipeView
-                anchors.left: parent.left
-                anchors.right: sizeViewVDivider.left
-                anchors.top: sideViewHDivider.bottom
-                anchors.bottom: parent.bottom
-            }
+            Material.elevation: 6
         }
 
         Item {
-            id: statusBar
-            height: 50
-            anchors.left: sideView.right
-            anchors.right: parent.right
+            id: dashboard
+            anchors.margins: 10
+            anchors.left: navigation.right
             anchors.top: parent.top
-
-            Rectangle {
-                id: statusBarHDivider
-                anchors.bottom: parent.bottom
-                anchors.left: parent.left
-                anchors.right: parent.right
-                height: 1
-                color: Universal.foreground
-            }
-
-            Text {
-                anchors.centerIn: parent
-                text: qsTr("Manual")
-                color: Universal.foreground
-                font.pixelSize: 35
-            }
-        }
-
-        ProcessView {
-            id: processView
-            anchors.top: statusBar.bottom
-            anchors.topMargin: 6
-            anchors.left: sideView.right
+            anchors.bottom: parent.bottom
             anchors.right: parent.right
+            ColumnLayout {
+                spacing: 10
+                anchors.fill: parent
+
+                Pane {
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: 55
+                    Material.elevation: 6
+                    Text {
+                        id: currentStage
+                        anchors.centerIn: parent
+                        text: qsTr("Idle")
+                        font.pixelSize: 45
+                        color: Material.foreground
+                    }
+                }
+
+                Pane {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    Material.elevation: 6
+                    ProcessView {
+                        id: processView
+                        anchors.fill: parent
+                        onSetpointClicked: {
+                            setpointDialog.editSetpoint(name, setpoint_value, false)
+                        }
+                    }
+                }
+
+                Pane {
+                    Layout.fillWidth: true
+                    Material.elevation: 6
+                    Layout.preferredHeight: 55
+                }
+            }
         }
 
         InputPanel {
@@ -115,6 +97,7 @@ ApplicationWindow {
                 }
             }
             transitions: Transition {
+                id: inputPanelTransition
                 from: ""
                 to: "visible"
                 reversible: true
@@ -126,6 +109,11 @@ ApplicationWindow {
                     }
                 }
             }
+        }
+
+        SetPointDialog {
+            id: setpointDialog
+            anchors.fill: parent
         }
     }
 

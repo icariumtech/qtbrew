@@ -1,9 +1,12 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.12
-import QtQuick.Controls.Universal 2.12
+import QtQuick.Controls.Material 2.12
 import QtQuick.Layouts 1.12
 
 Item {
+    id: kettle
+    signal clicked()
+
     property color liquidColor: "blue"
     property double totalVolumn : 20
     property double liquidVolumn: 0
@@ -23,21 +26,24 @@ Item {
             Layout.alignment: Qt.AlignCenter
             text: qsTr(kettleName)
             font.pixelSize: 14
-            color: Universal.foreground
+            color: Material.foreground
         }
 
         SetPoint {
             width: parent.width
             height: 75
+            onClicked: {
+                kettle.clicked()
+            }
         }
 
         Rectangle {
-            id: kettle
+            id: kettleFrame
             Layout.fillHeight: true
             width: parent.width
             color: "#00000000"
             radius: 10
-            border.color: Universal.foreground
+            border.color: Material.foreground
             border.width: 2
 
             Rectangle {
@@ -45,8 +51,8 @@ Item {
                 visible: liquidVolumn > 0
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.bottom: parent.bottom
-                anchors.bottomMargin: kettle.border.width
-                width: parent.width - (kettle.border.width * 2)
+                anchors.bottomMargin: kettleFrame.border.width
+                width: parent.width - (kettleFrame.border.width * 2)
                 height: 15
                 radius: 7.5
                 color: liquidColor
@@ -57,7 +63,7 @@ Item {
                 visible: liquidVolumn > 0
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.bottom: base_liquid_level.verticalCenter
-                width: parent.width - (kettle.border.width * 2)
+                width: parent.width - (kettleFrame.border.width * 2)
                 height: Math.max(liquidVolumn / totalVolumn * (parent.height - 20 - (base_liquid_level.height / 2)), 8)
                 color: liquidColor
             }
