@@ -8,9 +8,6 @@ Item {
         dialog.title = name + " Set Point";
         setpoint.text = ""
         setpoint.placeholderText = value;
-
-        //        percentDegreesButton.text = percent ? "%" : "\xB0 F";
-
         dialog.open();
         setpoint.focus = true;
     }

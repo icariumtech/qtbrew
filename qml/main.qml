@@ -3,7 +3,6 @@ import QtQuick.Window 2.12
 import QtQuick.VirtualKeyboard 2.4
 import QtQuick.Controls 2.12
 import QtQuick.Controls.Material 2.12
-import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.12
 
 ApplicationWindow {
@@ -14,12 +13,17 @@ ApplicationWindow {
     title: qsTr("Qt Brew")
 
     Material.theme: Material.Dark
-    Material.accent: Material.Green
+    Material.accent: Material.color(Material.Yellow, Material.Shade800)
 
-    Image {
+    Rectangle {
         id: splash
-        y: -40
-        source: "qrc:///images/brewerycontroller.png"
+        anchors.fill: parent
+        color: "black"
+        layer.enabled: true
+        Image {
+            y: -40
+            source: "qrc:///images/brewerycontroller.png"
+        }
     }
 
     Item {
@@ -27,58 +31,23 @@ ApplicationWindow {
         anchors.fill: parent
         opacity: 0
 
-        Pane {
+        NavigationPane {
             id: navigation
-            width: 50
+            width: 55
             anchors.left: parent.left
             anchors.top: parent.top
             anchors.bottom: parent.bottom
-            Material.elevation: 6
+            onSwitchPage: {
+                pageStack.switchPage(idx)
+            }
         }
 
-        Item {
-            id: dashboard
-            anchors.margins: 10
+        PageStack {
+            id: pageStack
             anchors.left: navigation.right
             anchors.top: parent.top
             anchors.bottom: parent.bottom
             anchors.right: parent.right
-            ColumnLayout {
-                spacing: 10
-                anchors.fill: parent
-
-                Pane {
-                    Layout.fillWidth: true
-                    Layout.preferredHeight: 55
-                    Material.elevation: 6
-                    Text {
-                        id: currentStage
-                        anchors.centerIn: parent
-                        text: qsTr("Idle")
-                        font.pixelSize: 45
-                        color: Material.foreground
-                    }
-                }
-
-                Pane {
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
-                    Material.elevation: 6
-                    ProcessView {
-                        id: processView
-                        anchors.fill: parent
-                        onSetpointClicked: {
-                            setpointDialog.editSetpoint(name, setpoint_value, false)
-                        }
-                    }
-                }
-
-                Pane {
-                    Layout.fillWidth: true
-                    Material.elevation: 6
-                    Layout.preferredHeight: 55
-                }
-            }
         }
 
         InputPanel {
