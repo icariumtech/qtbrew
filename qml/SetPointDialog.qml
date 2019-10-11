@@ -10,6 +10,7 @@ Item {
         setpoint.placeholderText = value;
         dialog.open();
         setpoint.focus = true;
+        dialog.standardButton(Dialog.Apply).enabled = false
     }
 
     anchors.fill: parent
@@ -34,6 +35,7 @@ Item {
         focus: true
         modal: false
         closePolicy: Popup.CloseOnEscape
+
         standardButtons: Dialog.Cancel | Dialog.Apply
         contentItem: Item {
             TextField {
@@ -41,7 +43,24 @@ Item {
                 anchors.left: parent.left
                 anchors.right: parent.right
                 inputMethodHints: Qt.ImhDigitsOnly
+                validator: IntValidator {
+                    bottom: 75
+                    top: 212
+                }
+                onAccepted: {
+                    if ((text > 75) && (text < 212))
+                    {
+                        dialog.accept()
+                    }
+                }
+                onTextChanged: {
+                    dialog.standardButton(Dialog.Apply).enabled =
+                            ((text > 75) && (text <= 212))
+                }
             }
+        }
+        onApplied: {
+            dialog.accept()
         }
     }
     MouseArea {

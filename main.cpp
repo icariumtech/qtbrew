@@ -1,6 +1,10 @@
+#include <QFont>
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQuickStyle>
+
+#include "brewingcontroller.h"
+#include "uicontroller.h"
 
 int main(int argc, char *argv[])
 {
@@ -11,14 +15,11 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     QQuickStyle::setStyle("Material");
-    QQmlApplicationEngine engine;
-    const QUrl url(QStringLiteral("qrc:/qml/main.qml"));
-    QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
-                     &app, [url](QObject *obj, const QUrl &objUrl) {
-        if (!obj && url == objUrl)
-            QCoreApplication::exit(-1);
-    }, Qt::QueuedConnection);
-    engine.load(url);
+    QGuiApplication::setFont(QFont("Roboto"));
+
+    Brewing::Controller controller;
+    Ui::Controller ui(&controller);
+    (void)ui;
 
     return app.exec();
 }
