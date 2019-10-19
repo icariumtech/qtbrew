@@ -127,6 +127,8 @@ void TempSensor::ReadTemp()
     double c = 1.0 - resistance / RTD_RESISTANCE_PT1000;
     double D = b_sq - 2.0 * a2 * c;
     d->m_temp = (-RTD_A + sqrt(D)) / a2;
+
+    qDebug() << d->m_spi_p->chip_select << d->m_temp;
 }
 
 int TempSensor::Data::Write(uint8_t reg, uint8_t value)
