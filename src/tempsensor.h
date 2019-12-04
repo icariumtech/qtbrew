@@ -16,10 +16,8 @@ public:
 
     double GetTemp() const;
 
-public slots:
-    void Init();
-
 private slots:
+    void Init();
     void ReadTemp();
 
 private:

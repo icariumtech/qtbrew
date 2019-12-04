@@ -3,6 +3,7 @@
 #include <QThread>
 #include <QTimer>
 
+#include "pid.h"
 #include "relay.h"
 #include "tempsensor.h"
 
@@ -23,7 +24,11 @@ public:
     TempSensor m_mash_upper_temp;
     TempSensor m_boil_temp;
 
-    QThread m_temp_thread;
+    Pid m_hlt_pid;
+    Pid m_mash_pid;
+    Pid m_boil_pid;
+
+    QThread m_pid_thread;
 
     Data();
     ~Data();
@@ -46,24 +51,25 @@ Controller::Data::Data() :
     m_hlt_temp(0, 0),
     m_mash_lower_temp(0, 1),
     m_mash_upper_temp(0, 2),
-    m_boil_temp(0, 3)
+    m_boil_temp(0, 3),
+    m_hlt_pid("hlt", &m_hlt_temp, &m_hlt_element),
+    m_mash_pid("mash", &m_mash_lower_temp, &m_hlt_element),
+    m_boil_pid("boil", &m_boil_temp, &m_boil_element)
 {
-    m_hlt_temp.moveToThread(&m_temp_thread);
-    m_mash_lower_temp.moveToThread(&m_temp_thread);
-    m_mash_upper_temp.moveToThread(&m_temp_thread);
-    m_boil_temp.moveToThread(&m_temp_thread);
-    m_temp_thread.start();
-
-    QTimer::singleShot(0, &m_hlt_temp, &TempSensor::Init);
-    QTimer::singleShot(0, &m_mash_lower_temp, &TempSensor::Init);
-    QTimer::singleShot(0, &m_mash_upper_temp, &TempSensor::Init);
-    QTimer::singleShot(0, &m_boil_temp, &TempSensor::Init);
+    m_hlt_temp.moveToThread(&m_pid_thread);
+    m_mash_lower_temp.moveToThread(&m_pid_thread);
+    m_mash_upper_temp.moveToThread(&m_pid_thread);
+    m_boil_temp.moveToThread(&m_pid_thread);
+    m_hlt_pid.moveToThread(&m_pid_thread);
+    m_mash_pid.moveToThread(&m_pid_thread);
+    m_boil_pid.moveToThread(&m_pid_thread);
+    m_pid_thread.start();
 }
 
 Controller::Data::~Data()
 {
-    m_temp_thread.quit();
-    m_temp_thread.wait();
+    m_pid_thread.quit();
+    m_pid_thread.wait();
 }
 
 }

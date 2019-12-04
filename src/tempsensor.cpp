@@ -1,7 +1,10 @@
 #include "tempsensor.h"
 
 #include <cmath>
-#include <libsoc_spi.h>
+#include <fcntl.h>
+#include <linux/spi/spidev.h>
+#include <sys/ioctl.h>
+#include <unistd.h>
 
 #include <QDebug>
 #include <QThread>
@@ -30,6 +33,7 @@ namespace
 #define RTD_RESISTANCE_PT100   100 /* Ohm */
 #define RTD_RESISTANCE_PT1000 1000 /* Ohm */
 
+const uint8_t CONFIG_RD_ADDR = 0x00;
 const uint8_t CONFIG_WR_ADDR = 0x80;
 const uint8_t THRESHOLD_WR_ADDR = 0x83;
 const uint8_t RTD_RD_ADDR = 0x01;
@@ -55,7 +59,7 @@ namespace Brewing
 class TempSensor::Data
 {
 public:
-    spi *m_spi_p;
+    int m_spi_fd;
     double m_temp = qQNaN();
     QTimer *m_timer_p;
 
@@ -63,18 +67,73 @@ public:
     int Write(uint8_t reg, uint16_t value);
     int Write(uint8_t reg, const uint8_t *values_p, uint32_t len);
     int Write(uint8_t *rx_p, uint32_t len);
+    int Read(uint8_t reg, uint8_t &value);
     int Read(uint8_t reg, uint16_t &value);
     int Read(uint8_t reg, uint8_t *rx_p, uint32_t len);
 };
 
 TempSensor::TempSensor(uint8_t device, uint8_t cs) : QObject(), d(new Data)
 {
-    d->m_spi_p = libsoc_spi_init(device, cs);
+    int retval = 0;
+    unsigned char spi_mode = SPI_MODE_0;
+    unsigned char spi_bpw = 8;
+    unsigned int spi_speed = 1000000;
+    QString dev_device = QString("/dev/spidev%1.%2").arg(device).arg(cs);
+    d->m_spi_fd = open(dev_device.toStdString().c_str(), O_RDWR);
+    if (d->m_spi_fd < 0)
+    {
+        qWarning() << "Failed to open spi device:" << dev_device;
+        return;
+    }
+
+    retval = ioctl(d->m_spi_fd, SPI_IOC_WR_MODE, &spi_mode);
+    if(retval < 0)
+    {
+        qWarning() << "Could not set SPIMode (WR)..." << dev_device;
+        return;
+    }
+
+    retval = ioctl(d->m_spi_fd, SPI_IOC_RD_MODE, &spi_mode);
+    if(retval < 0)
+    {
+        qWarning() << "Could not set SPIMode (RD)..." << dev_device;
+        return;
+    }
+
+    retval = ioctl(d->m_spi_fd, SPI_IOC_WR_BITS_PER_WORD, &spi_bpw);
+    if(retval < 0)
+    {
+        qWarning() << "Could not set SPI bitsPerWord (WR)..." << dev_device;
+        return;
+    }
+
+    retval = ioctl(d->m_spi_fd, SPI_IOC_RD_BITS_PER_WORD, &spi_bpw);
+    if(retval < 0)
+    {
+        qWarning() << "Could not set SPI bitsPerWord(RD)..." << dev_device;
+        return;
+    }
+
+    retval = ioctl(d->m_spi_fd, SPI_IOC_WR_MAX_SPEED_HZ, &spi_speed);
+    if(retval < 0)
+    {
+        qWarning() << "Could not set SPI speed (WR)..." << dev_device;
+        return;
+    }
+
+    retval = ioctl(d->m_spi_fd, SPI_IOC_RD_MAX_SPEED_HZ, &spi_speed);
+    if(retval < 0)
+    {
+        qWarning() << "Could not set SPI speed (RD)..." << dev_device;
+        return;
+    }
+
+    QTimer::singleShot(0, this, &TempSensor::Init);
 }
 
 TempSensor::~TempSensor()
 {
-    libsoc_spi_free(d->m_spi_p);
+    close(d->m_spi_fd);
 }
 
 double TempSensor::GetTemp() const
@@ -85,8 +144,9 @@ double TempSensor::GetTemp() const
 void TempSensor::Init()
 {
     int retval = EXIT_SUCCESS;
+    uint8_t config_value = 0;
+    if (d->m_spi_fd < 0)
 
-    if (!d->m_spi_p)
     {
         qWarning() << "Failed to initialize spi device.";
         return;
@@ -98,6 +158,10 @@ void TempSensor::Init()
     QThread::msleep(100);
 
     retval |= d->Write(CONFIG_WR_ADDR, CONFIGURATION);
+    retval |= d->Read(CONFIG_RD_ADDR, config_value);
+    qDebug() << "Config Read: " << QString::number(config_value, 16);
+
+
     retval |= d->Write(THRESHOLD_WR_ADDR, THREASHOLDS, sizeof(THREASHOLDS));
 
     if (retval != EXIT_SUCCESS)
@@ -127,8 +191,6 @@ void TempSensor::ReadTemp()
     double c = 1.0 - resistance / RTD_RESISTANCE_PT1000;
     double D = b_sq - 2.0 * a2 * c;
     d->m_temp = (-RTD_A + sqrt(D)) / a2;
-
-    qDebug() << d->m_spi_p->chip_select << d->m_temp;
 }
 
 int TempSensor::Data::Write(uint8_t reg, uint8_t value)
@@ -167,6 +229,12 @@ int TempSensor::Data::Write(uint8_t *rx_p, uint32_t len)
     }
 
     return libsoc_spi_write(m_spi_p, rx_p, len);
+}
+
+int TempSensor::Data::Read(uint8_t reg, uint8_t &value)
+{
+    int retval = Read(reg, &value, 1);
+    return retval;
 }
 
 int TempSensor::Data::Read(uint8_t reg, uint16_t &value)
