@@ -1,6 +1,5 @@
 #pragma once
 
-#include <QFile>
 #include <QObject>
 
 namespace Brewing
@@ -18,9 +17,6 @@ public:
 
 public slots:
     void Init();
-
-private slots:
-    void ReadTemp();
 
 private:
     class Data;
