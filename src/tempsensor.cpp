@@ -18,28 +18,15 @@ const uint8_t MAX31856_CONFIG_MODEAUTO = 0x40;
 const uint8_t MAX31856_CONFIG_MODEOFF = 0x00;
 const uint8_t MAX31856_CONFIG_1SHOT = 0x20;
 const uint8_t MAX31856_CONFIG_3WIRE = 0x10;
-const uint8_t MAX31856_CONFIG_24WIRE = 0x00;
 const uint8_t MAX31856_CONFIG_FAULTSTAT = 0x02;
-const uint8_t MAX31856_CONFIG_FILT50HZ = 0x01;
-const uint8_t MAX31856_CONFIG_FILT60HZ = 0x00;
 
 const uint8_t MAX31856_RTDMSB_REG = 0x01;
-const uint8_t MAX31856_RTDLSB_REG = 0x02;
-const uint8_t MAX31856_HFAULTMSB_REG = 0x03;
-const uint8_t MAX31856_HFAULTLSB_REG = 0x04;
-const uint8_t MAX31856_LFAULTMSB_REG = 0x05;
-const uint8_t MAX31856_LFAULTLSB_REG = 0x06;
-const uint8_t MAX31856_FAULTSTAT_REG = 0x07;
-
-const uint8_t MAX31865_FAULT_HIGHTHRESH = 0x80;
-const uint8_t MAX31865_FAULT_LOWTHRESH = 0x40;
-const uint8_t MAX31865_FAULT_REFINLOW = 0x20;
-const uint8_t MAX31865_FAULT_REFINHIGH = 0x10;
-const uint8_t MAX31865_FAULT_RTDINLOW = 0x08;
-const uint8_t MAX31865_FAULT_OVUV = 0x04;
 
 const double RTD_A = 3.9083e-3;
 const double RTD_B = -5.775e-7;
+
+const unsigned char SPI_BPW = 8;
+const unsigned int SPI_SPEED = 500000;
 
 enum NumWires
 {
@@ -71,10 +58,9 @@ public:
     double ReadRtd();
 
     int WriteRegister8(uint8_t reg, uint8_t value);
-    int WriteRegisterN(uint8_t *values_p, uint32_t len);
     int ReadRegister8(uint8_t reg, uint8_t &value);
     int ReadRegister16(uint8_t reg, uint16_t &value);
-    int ReadRegisterN(uint8_t reg, uint8_t *rx_p, uint32_t len);
+    int SpiReadWrite(uint8_t *data, int len);
 };
 
 TempSensor::TempSensor(uint8_t device, uint8_t cs) : QObject(), d(new Data)
@@ -106,8 +92,6 @@ bool TempSensor::Data::ConfigureSpi()
 {
     int retval = -1;
     unsigned char spi_mode = SPI_MODE_1;
-    unsigned char spi_bpw = 8;
-    unsigned int spi_speed = 500000;
 
     m_spi_fd = open(m_device.toStdString().c_str(), O_RDWR);
     if (m_spi_fd <= 0)
@@ -130,28 +114,28 @@ bool TempSensor::Data::ConfigureSpi()
         return false;
     }
 
-    retval = ioctl(m_spi_fd, SPI_IOC_WR_BITS_PER_WORD, &spi_bpw);
+    retval = ioctl(m_spi_fd, SPI_IOC_WR_BITS_PER_WORD, &SPI_BPW);
     if(retval < 0)
     {
         qWarning() << "Could not set SPI bitsPerWord (WR)";
         return false;
     }
 
-    retval = ioctl(m_spi_fd, SPI_IOC_RD_BITS_PER_WORD, &spi_bpw);
+    retval = ioctl(m_spi_fd, SPI_IOC_RD_BITS_PER_WORD, &SPI_BPW);
     if(retval < 0)
     {
         qWarning() << "Could not set SPI bitsPerWord(RD)";
         return false;
     }
 
-    retval = ioctl(m_spi_fd, SPI_IOC_WR_MAX_SPEED_HZ, &spi_speed);
+    retval = ioctl(m_spi_fd, SPI_IOC_WR_MAX_SPEED_HZ, &SPI_SPEED);
     if(retval < 0)
     {
         qWarning() << "Could not set SPI speed (WR)";
         return false;
     }
 
-    retval = ioctl(m_spi_fd, SPI_IOC_RD_MAX_SPEED_HZ, &spi_speed);
+    retval = ioctl(m_spi_fd, SPI_IOC_RD_MAX_SPEED_HZ, &SPI_SPEED);
     if(retval < 0)
     {
         qWarning() << "Could not set SPI speed (RD)";
@@ -345,48 +329,55 @@ double TempSensor::Data::ReadRtd()
 
 int TempSensor::Data::WriteRegister8(uint8_t reg, uint8_t value)
 {
-    uint8_t buff[2];
-    buff[0] = reg;
-    buff[1] = value;
-    return WriteRegisterN(buff, 2);
-}
+    int retval = 0;
+    reg |= 0x80;
 
-int TempSensor::Data::WriteRegisterN(uint8_t *values_p, uint32_t len)
-{
-    struct spi_ioc_transfer spi_xfer;
-    spi_xfer.tx_buf = (unsigned long)values_p;
-    spi_xfer.rx_buf = 0;
-    spi_xfer.len = len;
-    spi_xfer.delay_usecs = 0;
-    spi_xfer.speed_hz = 10000;
+    retval = SpiReadWrite(&reg, 1);
+    if (retval != 0) {return retval;}
 
-    return 0;
+    retval = SpiReadWrite(&value, 1);
+    return retval;
 }
 
 int TempSensor::Data::ReadRegister8(uint8_t reg, uint8_t &value)
 {
-    int retval = ReadRegisterN(reg, &value, 1);
-    return retval;
+    reg &= 0x7F;
+    value = reg;
+    return SpiReadWrite(&value, 1);
 }
 
 int TempSensor::Data::ReadRegister16(uint8_t reg, uint16_t &value)
 {
-    uint8_t buff[2];
-    int retval = ReadRegisterN(reg, buff, 2);
-    value = static_cast<uint16_t>(buff[0] << 8);
+    uint8_t buff[2] = {0, 0};
+    reg &= 0x7F;
+    buff[0] = reg;
+    int retval = SpiReadWrite(buff, 2);
+    if (retval != 0)
+    {
+        return retval;
+    }
+
+    value = buff[0];
+    value <<= 8;
     value |= buff[1];
+
     return retval;
 }
 
-int TempSensor::Data::ReadRegisterN(uint8_t reg, uint8_t *rx_p, uint32_t len)
+int TempSensor::Data::SpiReadWrite(uint8_t *data, int len)
 {
-//    if (!m_spi_p)
-//    {
-//        return EXIT_FAILURE;
-//    }
+    struct spi_ioc_transfer spi_xfer;
 
-//    return libsoc_spi_rw(m_spi_p, &reg, rx_p, len);
-    return 0;
+    memset (&spi_xfer, 0, sizeof (spi_xfer)) ;
+
+    spi_xfer.tx_buf        = (unsigned long)data ;
+    spi_xfer.rx_buf        = (unsigned long)data ;
+    spi_xfer.len           = len ;
+    spi_xfer.delay_usecs   = 0 ;
+    spi_xfer.speed_hz      = SPI_SPEED ;
+    spi_xfer.bits_per_word = SPI_BPW ;
+
+    return ioctl(m_spi_fd, SPI_IOC_MESSAGE(1), &spi_xfer) ;
 }
 
 } // namespace Brewing
