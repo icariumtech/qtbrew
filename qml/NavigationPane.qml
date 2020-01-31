@@ -18,14 +18,6 @@ Pane {
         height: parent.width
         y: dashboard.y
 
-        Rectangle {
-            color: Material.foreground
-            anchors.right: parent.right
-            anchors.top: parent.top
-            anchors.bottom: parent.bottom
-            width: 2
-        }
-
         Behavior on y {
             NumberAnimation {
                 duration: 200

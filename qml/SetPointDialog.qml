@@ -69,7 +69,7 @@ Item {
     }
     Rectangle {
         anchors.fill: parent
-        color: "black"
+        color: "#393e46"
         opacity: dialog.opacity / 2
         z: 100
     }

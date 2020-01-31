@@ -19,7 +19,7 @@ Item {
 
     ColumnLayout {
         anchors.fill: parent
-        spacing: 6
+        spacing: 0
 
         Text {
             id: name

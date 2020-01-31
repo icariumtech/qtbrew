@@ -11,14 +11,17 @@ ApplicationWindow {
     width: 800
     height: 480
     title: qsTr("Qt Brew")
+    color: "#393e46"
 
     Material.theme: Material.Dark
-    Material.accent: Material.color(Material.Yellow, Material.Shade800)
+    Material.accent: "#f96d00"
+    Material.background: "#222831"
+    Material.foreground: "#e7e5e5"
 
     Rectangle {
         id: splash
         anchors.fill: parent
-        color: "black"
+        color: "#393e46"
         layer.enabled: true
         Image {
             y: -40
@@ -29,10 +32,10 @@ ApplicationWindow {
     Item {
         id: mainPanel
         anchors.fill: parent
-        opacity: 0
 
         NavigationPane {
             id: navigation
+            opacity: 0
             width: 55
             anchors.left: parent.left
             anchors.top: parent.top
@@ -44,6 +47,7 @@ ApplicationWindow {
 
         PageStack {
             id: pageStack
+            opacity: 0
             anchors.left: navigation.right
             anchors.top: parent.top
             anchors.bottom: parent.bottom
@@ -88,18 +92,14 @@ ApplicationWindow {
 
     SequentialAnimation {
         id: startAnimation
-        ParallelAnimation {
-            NumberAnimation { target: splash; properties: "opacity"
-                duration: 750; to: 0
-            }
-            NumberAnimation { target: splash; properties: "scale"
-                duration: 750; to: 0.9
-            }
+        NumberAnimation { target: splash; properties: "opacity"
+            duration: 1000; to: 0
         }
-        ParallelAnimation {
-            NumberAnimation { target: mainPanel; properties: "opacity"
-                duration: 750; to: 1
-            }
+        NumberAnimation { target: navigation; properties: "opacity"
+            duration: 1000; to: 1
+        }
+        NumberAnimation { target: pageStack; properties: "opacity"
+            duration: 1000; to: 1
         }
         Component.onCompleted: startAnimation.start()
     }
