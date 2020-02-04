@@ -18,6 +18,12 @@ public:
 public slots:
     void Init();
 
+signals:
+    void TempChanged(double temp);
+
+private slots:
+    void ComputeTemp();
+
 private:
     class Data;
     QScopedPointer<Data> d;

@@ -57,9 +57,14 @@ Controller::Data::Data() :
     m_boil_pid("boil", &m_boil_temp, &m_boil_element)
 {
     m_hlt_temp.moveToThread(&m_pid_thread);
+    QTimer::singleShot(0, &m_hlt_temp, &TempSensor::Init);
+
     m_mash_lower_temp.moveToThread(&m_pid_thread);
+    QTimer::singleShot(0, &m_mash_lower_temp, &TempSensor::Init);
+
     m_mash_upper_temp.moveToThread(&m_pid_thread);
     m_boil_temp.moveToThread(&m_pid_thread);
+
     m_hlt_pid.moveToThread(&m_pid_thread);
     m_mash_pid.moveToThread(&m_pid_thread);
     m_boil_pid.moveToThread(&m_pid_thread);
