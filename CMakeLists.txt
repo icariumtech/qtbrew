@@ -17,7 +17,8 @@ file(GLOB SOURCES
     "${PROJECT_SOURCE_DIR}/src/*.cpp"
     "${PROJECT_SOURCE_DIR}/src/*.h"
     "${PROJECT_SOURCE_DIR}/ui/*.cpp"
-    "${PROJECT_SOURCE_DIR}/ui/*.h")
+    "${PROJECT_SOURCE_DIR}/ui/*.h"
+    )
 
 add_executable(${PROJECT_NAME} ${SOURCES} "main.cpp" "resources.qrc")
 target_compile_definitions(${PROJECT_NAME} PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
