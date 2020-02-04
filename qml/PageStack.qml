@@ -4,6 +4,10 @@ import QtQuick.Controls 2.12
 Item {
     id: pageStack
 
+    function show() {
+        dashBoard.show()
+    }
+
     function switchPage(idx) {
         swipView.setCurrentIndex(idx)
     }
@@ -18,6 +22,7 @@ Item {
             width: pageStack.width
             height: pageStack.height
             DashboardPane {
+                id: dashBoard
                 anchors.fill: parent
                 anchors.margins: 10
             }

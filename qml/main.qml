@@ -47,7 +47,6 @@ ApplicationWindow {
 
         PageStack {
             id: pageStack
-            opacity: 0
             anchors.left: navigation.right
             anchors.top: parent.top
             anchors.bottom: parent.bottom
@@ -96,11 +95,11 @@ ApplicationWindow {
             duration: 1000; to: 0
         }
         NumberAnimation { target: navigation; properties: "opacity"
-            duration: 1000; to: 1
-        }
-        NumberAnimation { target: pageStack; properties: "opacity"
-            duration: 1000; to: 1
+            duration: 1000; to: 1; easing.type: Easing.OutBounce
         }
         Component.onCompleted: startAnimation.start()
+        onStopped: {
+            pageStack.show()
+        }
     }
 }

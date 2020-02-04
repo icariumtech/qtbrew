@@ -6,7 +6,8 @@ Item {
     id: setpoint
     signal clicked()
 
-    property var mainColor: Material.foreground
+    property color mainColor: Material.foreground
+    property var error: false
 
     layer.enabled: true
 
@@ -58,6 +59,22 @@ Item {
             font.pixelSize: parent.height / 2 - 10
             text: "--"  + "\xB0 F"
         }
+    }
+
+    SequentialAnimation on mainColor {
+        id: errorAnimation
+        ColorAnimation {
+            from: mainColor
+            to: "red"
+            duration: 1000
+        }
+        ColorAnimation {
+            from: "red"
+            to: mainColor
+            duration: 1000
+        }
+        loops: Animation.Infinite
+        running: error
     }
 
     MouseArea {
