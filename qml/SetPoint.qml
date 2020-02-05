@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.12
 import QtQuick.Controls.Material 2.12
+import QtGraphicalEffects 1.0
 
 Item {
     id: setpoint
@@ -9,7 +10,29 @@ Item {
     property color mainColor: Material.foreground
     property var error: false
 
-    layer.enabled: true
+    layer.enabled: error
+    layer.effect: Glow {
+        id: errorGlow
+        samples: 0
+        color: "red"
+        transparentBorder: true
+
+        SequentialAnimation on samples {
+            id: errorAnimation
+            NumberAnimation {
+                from: 0
+                to: 25
+                duration: 500
+            }
+            NumberAnimation {
+                from: 25
+                to: 0
+                duration: 500
+            }
+            loops: Animation.Infinite
+            running: error
+        }
+    }
 
     Rectangle {
         id: button
@@ -59,22 +82,6 @@ Item {
             font.pixelSize: parent.height / 2 - 10
             text: "--"  + "\xB0 F"
         }
-    }
-
-    SequentialAnimation on mainColor {
-        id: errorAnimation
-        ColorAnimation {
-            from: mainColor
-            to: "red"
-            duration: 1000
-        }
-        ColorAnimation {
-            from: "red"
-            to: mainColor
-            duration: 1000
-        }
-        loops: Animation.Infinite
-        running: error
     }
 
     MouseArea {
