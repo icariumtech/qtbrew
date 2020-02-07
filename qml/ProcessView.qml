@@ -6,7 +6,7 @@ Item {
     Row {
         id: column
         anchors.horizontalCenter: parent.horizontalCenter
-        spacing: 75
+        spacing: 100
 
         Kettle {
             id: boil

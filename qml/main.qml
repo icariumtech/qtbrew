@@ -8,8 +8,8 @@ import QtQuick.Layouts 1.12
 ApplicationWindow {
     id: window
     visible: true
-    width: 800
-    height: 480
+    width: 1280
+    height: 800
     title: qsTr("Qt Brew")
     color: "#393e46"
 

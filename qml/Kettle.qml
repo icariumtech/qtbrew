@@ -12,8 +12,8 @@ Item {
     property double liquidVolumn: 0
     property string kettleName
 
-    width: 125
-    height: 275
+    width: 200
+    height: 400
 
     layer.enabled: true
 
@@ -25,13 +25,13 @@ Item {
             id: name
             Layout.alignment: Qt.AlignCenter
             text: qsTr(kettleName)
-            font.pixelSize: 14
+            font.pixelSize: 22
             color: Material.foreground
         }
 
         SetPoint {
             width: parent.width
-            height: 75
+            height: 100
             onClicked: {
                 kettle.clicked()
             }
