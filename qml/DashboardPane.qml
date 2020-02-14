@@ -12,18 +12,51 @@ Item {
 
     ColumnLayout {
         anchors.fill: parent
-        Pane {
-            id: currentStagePane
-            opacity: 0
+
+        Item {
+            id: setPoints
             Layout.fillWidth: true
-            Layout.preferredHeight: 55
-            Material.elevation: 6
-            Text {
-                id: currentStage
-                anchors.centerIn: parent
-                text: qsTr("Idle")
-                font.pixelSize: 45
-                color: Material.foreground
+            Layout.preferredHeight: 100
+            opacity: 0
+            RowLayout {
+                anchors.fill: parent
+                Pane {
+                    Material.elevation: 6
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    padding: 0
+                    Button {
+                        flat: true
+                        anchors.fill: parent
+                    }
+                }
+                Pane {
+                    Material.elevation: 6
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    Button {
+                        flat: true
+                        anchors.fill: parent
+                    }
+                }
+                Pane {
+                    Material.elevation: 6
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    Button {
+                        flat: true
+                        anchors.fill: parent
+                    }
+                }
+                Pane {
+                    Material.elevation: 6
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    Button {
+                        flat: true
+                        anchors.fill: parent
+                    }
+                }
             }
         }
 
@@ -53,7 +86,7 @@ Item {
 
     SequentialAnimation {
         id: startAnimation
-        NumberAnimation { target: currentStagePane; properties: "opacity"
+        NumberAnimation { target: setPoints; properties: "opacity"
             duration: 500; to: 1; easing.type: Easing.OutBounce
         }
         NumberAnimation { target: processPane; properties: "opacity"

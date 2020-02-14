@@ -13,6 +13,10 @@ ApplicationWindow {
     title: qsTr("Qt Brew")
     color: "#393e46"
 
+    menuBar: MenuBar {
+
+    }
+
     Material.theme: Material.Dark
     Material.accent: "#f96d00"
     Material.background: "#222831"

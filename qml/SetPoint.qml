@@ -41,7 +41,7 @@ Item {
         color: Material.background
         radius: 10
         border.color: mainColor
-        border.width: 1
+        border.width: 2
 
         Rectangle {
             anchors.top: parent.top

@@ -10,7 +10,7 @@ Button {
     contentItem: Image {
         id: buttonImage
         anchors.fill: parent
-        anchors.margins: 10
+        anchors.margins: 12
         fillMode: Image.PreserveAspectFit
         ColorOverlay {
             anchors.fill: parent

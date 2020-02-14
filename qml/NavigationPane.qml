@@ -13,9 +13,11 @@ Pane {
 
     Rectangle {
         id: selection
+        anchors.right: parent.right
         color: Material.accent
-        width: parent.width
+        width: parent.width * 2
         height: parent.width
+        radius: parent.width / 2
         y: dashboard.y
 
         Behavior on y {
