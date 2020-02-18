@@ -40,7 +40,7 @@ ApplicationWindow {
         NavigationPane {
             id: navigation
             opacity: 0
-            width: 55
+            width: 100 * dp
             anchors.left: parent.left
             anchors.top: parent.top
             anchors.bottom: parent.bottom

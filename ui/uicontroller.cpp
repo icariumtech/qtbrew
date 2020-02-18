@@ -1,6 +1,9 @@
 #include "uicontroller.h"
 
+#include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QQmlContext>
+#include <QScreen>
 
 #include "brewingcontroller.h"
 
@@ -29,6 +32,12 @@ Controller::~Controller()
 Controller::Data::Data(Brewing::Controller *controller_p)
 {
     (void)controller_p;
+
+    QScreen *screen_p = qApp->primaryScreen();
+    int dpi = screen_p->logicalDotsPerInch() * screen_p->devicePixelRatio();
+    qreal dp = dpi / 160.f;
+
+    m_engine.rootContext()->setContextProperty("dp", dp);
     m_engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
 }
 

@@ -2,6 +2,7 @@ import QtQuick 2.0
 import QtQuick.Controls 2.12
 import QtQuick.Controls.Material 2.12
 import QtQuick.Layouts 1.12
+import "."
 
 Item {
     id: dashboard
@@ -12,51 +13,24 @@ Item {
 
     ColumnLayout {
         anchors.fill: parent
+        spacing: Units.largeMargin
 
-        Item {
+        RowLayout {
             id: setPoints
             Layout.fillWidth: true
-            Layout.preferredHeight: 100
+            spacing: Units.largeMargin
             opacity: 0
-            RowLayout {
-                anchors.fill: parent
-                Pane {
-                    Material.elevation: 6
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
-                    padding: 0
-                    Button {
-                        flat: true
-                        anchors.fill: parent
-                    }
-                }
-                Pane {
-                    Material.elevation: 6
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
-                    Button {
-                        flat: true
-                        anchors.fill: parent
-                    }
-                }
-                Pane {
-                    Material.elevation: 6
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
-                    Button {
-                        flat: true
-                        anchors.fill: parent
-                    }
-                }
-                Pane {
-                    Material.elevation: 6
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
-                    Button {
-                        flat: true
-                        anchors.fill: parent
-                    }
-                }
+            SetPoint {
+                Layout.fillWidth: true
+                title: "Hot Liquor Tank"
+            }
+            SetPoint {
+                Layout.fillWidth: true
+                title: "Mash Lauter Tun"
+            }
+            SetPoint {
+                Layout.fillWidth: true
+                title: "Boil Kettle"
             }
         }
 
@@ -66,13 +40,13 @@ Item {
             Layout.fillWidth: true
             Layout.fillHeight: true
             Material.elevation: 6
-            ProcessView {
-                id: processView
-                anchors.fill: parent
-                onSetpointClicked: {
-                    setpointDialog.editSetpoint(name, setpoint_value, false)
-                }
-            }
+//            ProcessView {
+//                id: processView
+//                anchors.fill: parent
+//                onSetpointClicked: {
+//                    setpointDialog.editSetpoint(name, setpoint_value, false)
+//                }
+//            }
         }
 
         Pane {

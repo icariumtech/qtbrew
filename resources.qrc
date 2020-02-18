@@ -19,5 +19,7 @@
         <file>images/information.png</file>
         <file>images/recipebook.png</file>
         <file>images/settings.png</file>
+        <file>qml/qmldir</file>
+        <file>qml/Units.qml</file>
     </qresource>
 </RCC>

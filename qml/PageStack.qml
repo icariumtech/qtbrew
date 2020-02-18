@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.12
+import "."
 
 Item {
     id: pageStack
@@ -24,7 +25,7 @@ Item {
             DashboardPane {
                 id: dashBoard
                 anchors.fill: parent
-                anchors.margins: 10
+                anchors.margins: Units.largeMargin
             }
         }
 
@@ -33,7 +34,7 @@ Item {
             height: pageStack.height
             RecipePane {
                 anchors.fill: parent
-                anchors.margins: 10
+                anchors.margins: Units.largeMargin
             }
         }
 
@@ -42,7 +43,7 @@ Item {
             height: pageStack.height
             RecipePane {
                 anchors.fill: parent
-                anchors.margins: 10
+                anchors.margins: Units.largeMargin
             }
         }
 
@@ -51,7 +52,7 @@ Item {
             height: pageStack.height
             RecipePane {
                 anchors.fill: parent
-                anchors.margins: 10
+                anchors.margins: Units.largeMargin
             }
         }
     }

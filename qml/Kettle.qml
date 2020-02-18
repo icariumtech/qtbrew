@@ -29,14 +29,6 @@ Item {
             color: Material.foreground
         }
 
-        SetPoint {
-            width: parent.width
-            height: 100
-            onClicked: {
-                kettle.clicked()
-            }
-        }
-
         Rectangle {
             id: kettleFrame
             Layout.fillHeight: true

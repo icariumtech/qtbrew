@@ -7,6 +7,7 @@ Button {
     id: button
     property alias image: buttonImage.source
     checkable: true
+    flat: true
     contentItem: Image {
         id: buttonImage
         anchors.fill: parent
