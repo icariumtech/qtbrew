@@ -6,6 +6,7 @@
 #include <QScreen>
 
 #include "brewingcontroller.h"
+#include "radialbar.h"
 
 namespace Ui
 {
@@ -33,9 +34,11 @@ Controller::Data::Data(Brewing::Controller *controller_p)
 {
     (void)controller_p;
 
+    qmlRegisterType<RadialBar>("CustomControls", 1, 0, "RadialBar");
+
     QScreen *screen_p = qApp->primaryScreen();
     int dpi = screen_p->logicalDotsPerInch() * screen_p->devicePixelRatio();
-    qreal dp = dpi / 160.f;
+    qreal dp = dpi / 160.0;
 
     m_engine.rootContext()->setContextProperty("dp", dp);
     m_engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));

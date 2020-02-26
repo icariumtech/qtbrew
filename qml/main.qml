@@ -14,7 +14,8 @@ ApplicationWindow {
     color: "#393e46"
 
     menuBar: MenuBar {
-
+        id: menuBar
+        opacity: 0
     }
 
     Material.theme: Material.Dark
@@ -97,6 +98,9 @@ ApplicationWindow {
         id: startAnimation
         NumberAnimation { target: splash; properties: "opacity"
             duration: 1000; to: 0
+        }
+        NumberAnimation { target: menuBar; properties: "opacity"
+            duration: 1000; to: 1; easing.type: Easing.OutBounce
         }
         NumberAnimation { target: navigation; properties: "opacity"
             duration: 1000; to: 1; easing.type: Easing.OutBounce

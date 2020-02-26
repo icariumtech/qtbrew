@@ -1,4 +1,5 @@
 import QtQuick 2.0
+import CustomControls 1.0
 import QtCharts 2.3
 import QtQuick.Controls 2.12
 import QtQuick.Controls.Material 2.12
@@ -34,6 +35,28 @@ Item {
                 font.pixelSize: Units.titleFontSize
                 color: Material.foreground
             }
+        }
+
+        RadialBar {
+            anchors.top: parent.top
+            anchors.topMargin: Units.largeMargin
+            anchors.right: parent.right
+            anchors.rightMargin: Units.largeMargin
+            width: parent.height
+            penStyle: Qt.RoundCap
+            progressColor: Material.accent
+            foregroundColor: "#393e46"
+            dialWidth: 8
+            minValue: 65
+            maxValue: 154
+            value: 120
+//            startAngle: 90
+//            spanAngle: 180
+            suffixText: "\xB0F"
+            textFont {
+                pointSize: Units.titleFontSize
+            }
+            textColor: Material.foreground
         }
 
 //        ChartView {
