@@ -10,8 +10,9 @@ Item {
     signal clicked()
 
     property alias title: titleText.text
+    property var temp: 70
 
-    Layout.preferredHeight: (382 - 194) * dp
+    Layout.preferredHeight: 220 * dp
 
     Pane {
         id: setpoint
@@ -37,63 +38,61 @@ Item {
             }
         }
 
-        RadialBar {
-            anchors.top: parent.top
-            anchors.topMargin: Units.largeMargin
-            anchors.right: parent.right
-            anchors.rightMargin: Units.largeMargin
-            width: parent.height
-            penStyle: Qt.RoundCap
-            progressColor: Material.accent
-            foregroundColor: "#393e46"
-            dialWidth: 8
-            minValue: 65
-            maxValue: 154
-            value: 120
-//            startAngle: 90
-//            spanAngle: 180
-            suffixText: "\xB0F"
-            textFont {
-                pointSize: Units.titleFontSize
-            }
-            textColor: Material.foreground
-        }
-
-//        ChartView {
-//            id: chart
-//            title: ""
-//            antialiasing: true
-//            anchors.left: parent.left
-//            anchors.leftMargin: -8
-//            anchors.right: parent.right
-//            anchors.rightMargin: -8
-//            anchors.top: header.bottom
-//            height: 194 * dp
-//            margins.left: 0
-//            margins.right: 0
-//            margins.bottom: 0
-//            margins.top: 0
-//            legend.visible: false
-
-//            backgroundRoundness: 0
-
-//            LineSeries {
-//                XYPoint { x: 0; y: 0 }
-//                XYPoint { x: 1.1; y: 2.1 }
-//                XYPoint { x: 1.9; y: 3.3 }
-//            }
-//        }
-
         Text {
             id: currentTemp
+            anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: header.bottom
-            anchors.left: parent.left
-            anchors.leftMargin: Units.largeMargin
-            text: "156" + "\xB0F"
+            text: temp + "\xB0F"
             font.pixelSize: Units.display3FontSize
             font.bold: true
             color: Material.foreground
         }
-    }
 
+        Item {
+            anchors.right: parent.right
+            anchors.rightMargin: Units.largeMargin
+            anchors.top: header.bottom
+
+            Text {
+                id: setpointHeader
+                anchors.right: parent.right
+                anchors.top: parent.top
+                text: "Setpoint"
+                color: Material.foreground
+                font.pixelSize: Units.subheadFontSize
+            }
+            Text {
+                anchors.right: parent.right
+                anchors.top: setpointHeader.bottom
+                text: "212" + "\xB0F"
+                color: Material.foreground
+                font.pixelSize: Units.titleFontSize
+            }
+        }
+
+        RadialBar {
+            id: setpointProgress
+            anchors.top: header.bottom
+            anchors.bottom: parent.bottom
+            anchors.left: parent.left
+            anchors.leftMargin: Units.largeMargin
+            penStyle: Qt.RoundCap
+            progressColor: Material.accent
+            foregroundColor: "#393e46"
+            dialWidth: 8
+            value: 0
+            suffixText: "%"
+            textFont {
+                pointSize: Units.subheadFontSize
+            }
+            textColor: Material.foreground
+        }
+
+        RoundButton {
+            id: editButton
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            highlighted: true
+        }
+    }
 }
