@@ -1,16 +1,41 @@
 #include "relay.h"
 
-#include <gpiod.h>
+#include <linux/gpio.h>
+#include <fcntl.h>
+#include <sys/ioctl.h>
 
 #include <QDebug>
 
 namespace Brewing
 {
 
-Relay::Relay(int gpio) : m_gpio_num(gpio)
+class Relay::Data
 {
-    gpiod_ctxless_set_value("/dev/gpiochip0", m_gpio_num, 0,
-                            false, "qtbrew", nullptr, nullptr);
+public:
+    int m_fd;
+    struct gpiohandle_request m_request;
+    struct gpiohandle_data m_data;
+};
+
+Relay::Relay(int gpio, const QString name) : d(new Data)
+{
+    d->m_fd = open("/dev/gpiochip0", O_RDONLY);
+    if (d->m_fd == -1)
+    {
+        qWarning() << "Failed to open /dev/gpiochip0";
+    }
+
+    d->m_request.lineoffsets[0] = gpio;
+    d->m_request.lines = 1;
+    d->m_request.flags = GPIOHANDLE_REQUEST_OUTPUT |
+            GPIOHANDLE_REQUEST_ACTIVE_LOW;
+    strcpy(d->m_request.consumer_label, name.toUtf8().data());
+    if (ioctl(d->m_fd, GPIO_GET_LINEHANDLE_IOCTL, &d->m_request) == -1)
+    {
+        qWarning() << "Failed to get line" << name <<
+                      "at offset" << QString::number(gpio);
+    }
+    setEnable(false);
 }
 
 Relay::~Relay()
@@ -20,23 +45,20 @@ Relay::~Relay()
 
 void Relay::setEnable(bool enable)
 {
-    int retval = gpiod_ctxless_set_value("/dev/gpiochip0", m_gpio_num,
-                    enable ? 1 : 0, false, "qtbrew", nullptr, nullptr);
+    d->m_data.values[0] = enable ? 1 : 0;
+
+    int retval = ioctl(d->m_request.fd,
+                       GPIOHANDLE_SET_LINE_VALUES_IOCTL, &d->m_data);
     if (retval < 0)
     {
-        qWarning() << "Failed to set gpio " << m_gpio_num << " value";
+        qWarning() << "Failed to set gpio " <<
+                      d->m_request.lineoffsets[0] << " value";
     }
 }
 
 bool Relay::enabled() const
 {
-    int retval = gpiod_ctxless_get_value("/dev/gpiochip0", m_gpio_num,
-                                         false, "qtbrew");
-    if (retval < 0)
-    {
-        qWarning() << "Failed to get gpio " << m_gpio_num << " value";
-    }
-    return retval == 1;
+    return d->m_data.values[0] == 1;
 }
 
 } // namespace Brewing

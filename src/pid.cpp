@@ -82,7 +82,7 @@ void Pid::SetEnabled(bool enable)
 
 void Pid::Compute()
 {
-    double input = d->m_sensor_p->GetTemp();
+    double input = d->m_sensor_p->Temp();
 
     if (qIsNaN(input))
     {

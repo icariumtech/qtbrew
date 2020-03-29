@@ -1,5 +1,6 @@
 #include "brewingcontroller.h"
 
+#include <QDebug>
 #include <QThread>
 #include <QTimer>
 
@@ -44,10 +45,10 @@ Controller::~Controller()
 }
 
 Controller::Data::Data() :
-    m_hlt_element(6),
-    m_boil_element(13),
-    m_water_pump(19),
-    m_wort_pump(26),
+    m_hlt_element(27, "hlt"),
+    m_boil_element(26, "boil"),
+    m_water_pump(21, "water"),
+    m_wort_pump(13, "wort"),
     m_hlt_temp(0, 0),
     m_mash_lower_temp(0, 1),
     m_mash_upper_temp(0, 2),

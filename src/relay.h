@@ -1,19 +1,24 @@
 #pragma once
 
+#include <memory>
+
+#include <QString>
+
 namespace Brewing
 {
 
 class Relay
 {
 public:
-    Relay(int gpio);
+    Relay(int gpio, const QString name);
     virtual ~Relay();
 
     void setEnable(bool enable);
     bool enabled() const;
 
 private:
-    bool m_gpio_num;
+    class Data;
+    std::unique_ptr<Data> d;
 };
 
 } // namespace Brewing

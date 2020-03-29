@@ -72,7 +72,7 @@ TempSensor::~TempSensor()
     close(d->m_spi_fd);
 }
 
-double TempSensor::GetTemp() const
+double TempSensor::Temp() const
 {
     return d->m_temp;
 }

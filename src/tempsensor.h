@@ -9,11 +9,13 @@ class TempSensor : public QObject
 {
     Q_OBJECT
 
+    Q_PROPERTY(double temp READ Temp NOTIFY TempChanged)
+
 public:
     TempSensor(uint8_t device, uint8_t cs);
     virtual ~TempSensor();
 
-    double GetTemp() const;
+    double Temp() const;
 
 public slots:
     void Init();
