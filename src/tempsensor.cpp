@@ -98,7 +98,6 @@ void TempSensor::Init()
 void TempSensor::ComputeTemp()
 {
     double temp = d->ReadTemp();
-    qDebug() << d->m_device << temp;
     if (d->m_temp != temp)
     {
         d->m_temp = temp;
@@ -279,6 +278,11 @@ double TempSensor::Data::ReadTemp()
     double rtd_nominal = 100;
 
     Rt = ReadRtd();
+    if (qIsNaN(Rt))
+    {
+        return qQNaN();
+    }
+
     Rt /= 32768;
     Rt *= ref_resistor;
 
@@ -344,6 +348,10 @@ double TempSensor::Data::ReadRtd()
     }
     rtd >>= 1;
 
+    if (rtd == 0x7FFF)
+    {
+        return qQNaN();
+    }
     return static_cast<double>(rtd);
 }
 

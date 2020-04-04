@@ -6,6 +6,8 @@
 namespace Brewing
 {
 
+class TempSensor;
+
 class Controller : public QObject
 {
     Q_OBJECT
@@ -13,6 +15,11 @@ class Controller : public QObject
 public:
     Controller();
     virtual ~Controller();
+
+    TempSensor *HltTempSensor();
+    TempSensor *MashLowerTempSensor();
+    TempSensor *MashUpperTempSensor();
+    TempSensor *BoilTempSensor();
 
 private:
     class Data;

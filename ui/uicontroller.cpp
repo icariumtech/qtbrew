@@ -6,6 +6,7 @@
 #include <QScreen>
 
 #include "brewingcontroller.h"
+#include "tempsensor.h"
 #include "radialbar.h"
 
 namespace Ui
@@ -41,6 +42,14 @@ Controller::Data::Data(Brewing::Controller *controller_p)
     qreal dp = dpi / 160.0;
 
     m_engine.rootContext()->setContextProperty("dp", dp);
+    m_engine.rootContext()->setContextProperty(
+                "hlt", controller_p->HltTempSensor());
+    m_engine.rootContext()->setContextProperty(
+                "mashLower", controller_p->MashLowerTempSensor());
+    m_engine.rootContext()->setContextProperty(
+                "mashUpper", controller_p->MashUpperTempSensor());
+    m_engine.rootContext()->setContextProperty(
+                "boil", controller_p->BoilTempSensor());
     m_engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
 }
 

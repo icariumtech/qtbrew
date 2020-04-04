@@ -23,14 +23,17 @@ Item {
             SetPoint {
                 Layout.fillWidth: true
                 title: "Hot Liquor Tank"
+                temp: hlt.temp
             }
             SetPoint {
                 Layout.fillWidth: true
                 title: "Mash Lauter Tun"
+                temp: mashLower.temp
             }
             SetPoint {
                 Layout.fillWidth: true
                 title: "Boil Kettle"
+                temp: boil.temp
             }
         }
 
