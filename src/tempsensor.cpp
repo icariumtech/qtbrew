@@ -348,7 +348,7 @@ double TempSensor::Data::ReadRtd()
     }
     rtd >>= 1;
 
-    if (rtd == 0x7FFF)
+    if (rtd == 0x7FFF || rtd == 0x0000)
     {
         return qQNaN();
     }

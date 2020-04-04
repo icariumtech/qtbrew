@@ -23,5 +23,6 @@
         <file>qml/Units.qml</file>
         <file>images/warning.png</file>
         <file>images/warning.svg</file>
+        <file>qml/PumpPanel.qml</file>
     </qresource>
 </RCC>

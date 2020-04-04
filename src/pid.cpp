@@ -86,7 +86,7 @@ void Pid::Compute()
 
     if (qIsNaN(input))
     {
-        d->m_relay_p->setEnable(false);
+        d->m_relay_p->setEnabled(false);
         return;
     }
 
@@ -126,7 +126,7 @@ void Pid::Compute()
         d->m_counter = 0;
     }
 
-    d->m_relay_p->setEnable(d->m_counter <= d->m_output);
+    d->m_relay_p->setEnabled(d->m_counter <= d->m_output);
 }
 
 void Pid::SetSetpoint(double degrees_c)

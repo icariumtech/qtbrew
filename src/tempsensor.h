@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include <QObject>
 
 namespace Brewing
@@ -28,7 +30,7 @@ private slots:
 
 private:
     class Data;
-    QScopedPointer<Data> d;
+    std::unique_ptr<Data> d;
 };
 
 } // namespace Brewing

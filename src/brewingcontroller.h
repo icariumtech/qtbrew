@@ -7,6 +7,7 @@ namespace Brewing
 {
 
 class TempSensor;
+class Relay;
 
 class Controller : public QObject
 {
@@ -20,6 +21,9 @@ public:
     TempSensor *MashLowerTempSensor();
     TempSensor *MashUpperTempSensor();
     TempSensor *BoilTempSensor();
+
+    Relay *WaterPump();
+    Relay *WortPump();
 
 private:
     class Data;

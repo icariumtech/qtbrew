@@ -8,6 +8,7 @@
 #include "brewingcontroller.h"
 #include "tempsensor.h"
 #include "radialbar.h"
+#include "relay.h"
 
 namespace Ui
 {
@@ -50,6 +51,12 @@ Controller::Data::Data(Brewing::Controller *controller_p)
                 "mashUpper", controller_p->MashUpperTempSensor());
     m_engine.rootContext()->setContextProperty(
                 "boil", controller_p->BoilTempSensor());
+
+    m_engine.rootContext()->setContextProperty(
+                "waterPump", controller_p->WaterPump());
+    m_engine.rootContext()->setContextProperty(
+                "wortPump", controller_p->WortPump());
+
     m_engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
 }
 

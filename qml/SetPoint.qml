@@ -1,10 +1,7 @@
 import QtQuick 2.0
-import CustomControls 1.0
-import QtCharts 2.3
 import QtQuick.Controls 2.12
 import QtQuick.Controls.Material 2.12
 import QtQuick.Layouts 1.12
-import QtGraphicalEffects 1.0
 
 Item {
     signal clicked()
@@ -12,7 +9,7 @@ Item {
     property alias title: titleText.text
     property var temp: 0.0
 
-    Layout.preferredHeight: 250 * dp
+    Layout.preferredHeight: 160 * dp
 
     Pane {
         id: setpoint
@@ -33,7 +30,7 @@ Item {
                 anchors.topMargin: Units.largeMargin
                 anchors.left: parent.left
                 anchors.leftMargin: Units.largeMargin
-                font.pixelSize: Units.titleFontSize
+                font.pointSize: Units.subheadFontSize
                 color: Material.foreground
             }
         }
@@ -44,22 +41,26 @@ Item {
             anchors.leftMargin: Units.largeMargin
             anchors.right: parent.right
             anchors.rightMargin: Units.largeMargin
-            anchors.top: header.bottom
-            anchors.topMargin: Units.largeMargin
             anchors.bottom: parent.bottom
-            anchors.bottomMargin: Units.largeMargin
             visible: !isNaN(temp)
             text: (temp * 1.8 + 32).toFixed(1) + "\xB0F"
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignBottom
             font.bold: true
-            font.pixelSize: 80
+            font.pixelSize: 80 * dp
             color: Material.foreground
         }
 
         Item {
             id: warning
-            anchors.centerIn: currentTemp
+            anchors.left: parent.left
+            anchors.leftMargin: Units.largeMargin
+            anchors.right: parent.right
+            anchors.rightMargin: Units.largeMargin
+            anchors.top: header.bottom
+            anchors.topMargin: Units.largeMargin
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: Units.largeMargin
             visible: isNaN(temp)
 
             Image {
@@ -67,7 +68,7 @@ Item {
                 anchors.centerIn: parent
                 source: "qrc:/images/warning.png"
                 fillMode: Image.PreserveAspectFit
-                height: 80
+                height: 70 * dp
             }
 
             Text {
@@ -75,7 +76,7 @@ Item {
                 anchors.right: warningImage.left
                 anchors.verticalCenter: warningImage.verticalCenter
                 text: "<<<"
-                font.pixelSize: 50
+                font.pixelSize: 50 * dp
                 font.bold: true
                 color: "red"
             }
@@ -85,7 +86,7 @@ Item {
                 anchors.left: warningImage.right
                 anchors.verticalCenter: warningImage.verticalCenter
                 text: ">>>"
-                font.pixelSize: 50
+                font.pixelSize: 50 * dp
                 font.bold: true
                 color: "red"
             }

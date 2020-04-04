@@ -5,6 +5,7 @@
 #include <sys/ioctl.h>
 
 #include <QDebug>
+#include <QString>
 
 namespace Brewing
 {
@@ -35,7 +36,7 @@ Relay::Relay(int gpio, const QString name) : d(new Data)
         qWarning() << "Failed to get line" << name <<
                       "at offset" << QString::number(gpio);
     }
-    setEnable(false);
+    setEnabled(false);
 }
 
 Relay::~Relay()
@@ -43,7 +44,7 @@ Relay::~Relay()
 
 }
 
-void Relay::setEnable(bool enable)
+void Relay::setEnabled(bool enable)
 {
     d->m_data.values[0] = enable ? 1 : 0;
 
@@ -54,6 +55,7 @@ void Relay::setEnable(bool enable)
         qWarning() << "Failed to set gpio " <<
                       d->m_request.lineoffsets[0] << " value";
     }
+    emit enabledChanged(enable);
 }
 
 bool Relay::enabled() const

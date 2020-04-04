@@ -51,6 +51,32 @@ Item {
                 temp: boil.temp
             }
         }
+
+        RowLayout {
+            id: pumps
+            Layout.fillWidth: true
+            spacing: Units.largeMargin
+            opacity: 0
+            PumpPanel {
+                Layout.fillWidth: true
+                title: "Water Pump"
+                relayEnabled: waterPump.enabled
+                onClicked: {
+                    waterPump.enabled = !waterPump.enabled
+                }
+            }
+            Item {
+                Layout.fillWidth: true
+            }
+            PumpPanel {
+                Layout.fillWidth: true
+                title: "Wort Pump"
+                relayEnabled: wortPump.enabled
+                onClicked: {
+                    wortPump.enabled = !wortPump.enabled
+                }
+            }
+        }
     }
 
     SequentialAnimation {
@@ -59,6 +85,9 @@ Item {
             duration: 500; to: 1; easing.type: Easing.OutBounce
         }
         NumberAnimation { target: setPoints; properties: "opacity"
+            duration: 500; to: 1; easing.type: Easing.OutBounce
+        }
+        NumberAnimation { target: pumps; properties: "opacity"
             duration: 500; to: 1; easing.type: Easing.OutBounce
         }
     }
