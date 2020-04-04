@@ -15,6 +15,21 @@ Item {
         anchors.fill: parent
         spacing: Units.largeMargin
 
+        Pane {
+            id: processPane
+            opacity: 0
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            Material.elevation: 6
+//            ProcessView {
+//                id: processView
+//                anchors.fill: parent
+//                onSetpointClicked: {
+//                    setpointDialog.editSetpoint(name, setpoint_value, false)
+//                }
+//            }
+        }
+
         RowLayout {
             id: setPoints
             Layout.fillWidth: true
@@ -36,40 +51,14 @@ Item {
                 temp: boil.temp
             }
         }
-
-        Pane {
-            id: processPane
-            opacity: 0
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            Material.elevation: 6
-//            ProcessView {
-//                id: processView
-//                anchors.fill: parent
-//                onSetpointClicked: {
-//                    setpointDialog.editSetpoint(name, setpoint_value, false)
-//                }
-//            }
-        }
-
-        Pane {
-            id: timerPane
-            opacity: 0
-            Layout.fillWidth: true
-            Material.elevation: 6
-            Layout.preferredHeight: 55
-        }
     }
 
     SequentialAnimation {
         id: startAnimation
-        NumberAnimation { target: setPoints; properties: "opacity"
-            duration: 500; to: 1; easing.type: Easing.OutBounce
-        }
         NumberAnimation { target: processPane; properties: "opacity"
             duration: 500; to: 1; easing.type: Easing.OutBounce
         }
-        NumberAnimation { target: timerPane; properties: "opacity"
+        NumberAnimation { target: setPoints; properties: "opacity"
             duration: 500; to: 1; easing.type: Easing.OutBounce
         }
     }

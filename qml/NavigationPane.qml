@@ -15,9 +15,8 @@ Pane {
         id: selection
         anchors.right: parent.right
         color: Material.accent
-        width: parent.width * 2
+        width: parent.width
         height: parent.width
-        radius: parent.width / 2
         y: dashboard.y
 
         Behavior on y {

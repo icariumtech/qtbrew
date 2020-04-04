@@ -12,7 +12,7 @@ Item {
     property alias title: titleText.text
     property var temp: 0.0
 
-    Layout.preferredHeight: 220 * dp
+    Layout.preferredHeight: 250 * dp
 
     Pane {
         id: setpoint
@@ -42,57 +42,72 @@ Item {
             id: currentTemp
             anchors.left: parent.left
             anchors.leftMargin: Units.largeMargin
+            anchors.right: parent.right
+            anchors.rightMargin: Units.largeMargin
             anchors.top: header.bottom
-            text: (isNaN(temp) ? "--" : (temp * 1.8 + 32).toFixed(1)) + "\xB0F"
-            font.pixelSize: Units.display3FontSize
+            anchors.topMargin: Units.largeMargin
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: Units.largeMargin
+            visible: !isNaN(temp)
+            text: (temp * 1.8 + 32).toFixed(1) + "\xB0F"
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignBottom
             font.bold: true
+            font.pixelSize: 80
             color: Material.foreground
         }
-//        Item {
-//            anchors.right: parent.right
-//            anchors.rightMargin: Units.largeMargin
-//            anchors.top: header.bottom
 
-//            Text {
-//                id: setpointHeader
-//                anchors.right: parent.right
-//                anchors.top: parent.top
-//                text: "Setpoint"
-//                color: Material.foreground
-//                font.pixelSize: Units.subheadFontSize
-//            }
-//            Text {
-//                anchors.right: parent.right
-//                anchors.top: setpointHeader.bottom
-//                text: "212" + "\xB0F"
-//                color: Material.foreground
-//                font.pixelSize: Units.titleFontSize
-//            }
-//        }
+        Item {
+            id: warning
+            anchors.centerIn: currentTemp
+            visible: isNaN(temp)
 
-//        RadialBar {
-//            id: setpointProgress
-//            anchors.top: header.bottom
-//            anchors.bottom: parent.bottom
-//            anchors.left: parent.left
-//            anchors.leftMargin: Units.largeMargin
-//            penStyle: Qt.RoundCap
-//            progressColor: Material.accent
-//            foregroundColor: "#393e46"
-//            dialWidth: 8
-//            value: 0
-//            suffixText: "%"
-//            textFont {
-//                pointSize: Units.subheadFontSize
-//            }
-//            textColor: Material.foreground
-//        }
+            Image {
+                id: warningImage
+                anchors.centerIn: parent
+                source: "qrc:/images/warning.png"
+                fillMode: Image.PreserveAspectFit
+                height: 80
+            }
 
-//        RoundButton {
-//            id: editButton
-//            anchors.right: parent.right
-//            anchors.bottom: parent.bottom
-//            highlighted: true
-//        }
+            Text {
+                id: leftArrows
+                anchors.right: warningImage.left
+                anchors.verticalCenter: warningImage.verticalCenter
+                text: "<<<"
+                font.pixelSize: 50
+                font.bold: true
+                color: "red"
+            }
+
+            Text {
+                id: rightArrows
+                anchors.left: warningImage.right
+                anchors.verticalCenter: warningImage.verticalCenter
+                text: ">>>"
+                font.pixelSize: 50
+                font.bold: true
+                color: "red"
+            }
+
+            Timer {
+                id: textTimer
+                interval: 500
+                repeat: true
+                running: isNaN(temp)
+                onTriggered: {
+                    if (leftArrows.text == "<<<")
+                    {
+                        leftArrows.text = ""
+                        rightArrows.text = ""
+                    }
+                    else
+                    {
+                        leftArrows.text = leftArrows.text + "<"
+                        rightArrows.text = rightArrows.text + ">"
+                    }
+                }
+            }
+        }
     }
 }

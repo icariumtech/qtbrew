@@ -21,5 +21,7 @@
         <file>images/settings.png</file>
         <file>qml/qmldir</file>
         <file>qml/Units.qml</file>
+        <file>images/warning.png</file>
+        <file>images/warning.svg</file>
     </qresource>
 </RCC>
