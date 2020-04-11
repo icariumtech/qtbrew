@@ -15,19 +15,23 @@ Item {
         anchors.fill: parent
         spacing: Units.largeMargin
 
-        Pane {
+        RowLayout {
             id: processPane
             opacity: 0
             Layout.fillWidth: true
             Layout.fillHeight: true
-            Material.elevation: 6
-//            ProcessView {
-//                id: processView
-//                anchors.fill: parent
-//                onSetpointClicked: {
-//                    setpointDialog.editSetpoint(name, setpoint_value, false)
-//                }
-//            }
+            spacing: Units.largeMargin
+
+            BrewSteps {
+                Layout.minimumWidth: hltsetpoint.width
+                Layout.fillHeight: true
+            }
+
+            Pane {
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                Material.elevation: 6
+            }
         }
 
         RowLayout {
@@ -36,6 +40,7 @@ Item {
             spacing: Units.largeMargin
             opacity: 0
             SetPoint {
+                id: hltsetpoint
                 Layout.fillWidth: true
                 title: "Hot Liquor Tank"
                 temp: hlt.temp

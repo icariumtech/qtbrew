@@ -24,5 +24,6 @@
         <file>images/warning.png</file>
         <file>images/warning.svg</file>
         <file>qml/PumpPanel.qml</file>
+        <file>qml/BrewSteps.qml</file>
     </qresource>
 </RCC>

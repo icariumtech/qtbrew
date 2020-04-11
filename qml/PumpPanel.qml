@@ -30,8 +30,8 @@ Item {
                 anchors.top: parent.top
                 anchors.topMargin: Units.largeMargin
                 anchors.left: parent.left
-                anchors.leftMargin: Units.largeMargin
-                font.pointSize: Units.subheadFontSize
+                anchors.leftMargin: Units.smallMargin
+                font.pixelSize: Units.headlineFontSize
                 color: Material.foreground
             }
         }
