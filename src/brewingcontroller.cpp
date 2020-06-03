@@ -4,6 +4,7 @@
 #include <QThread>
 #include <QTimer>
 
+#include "brewsession.h"
 #include "pid.h"
 #include "relay.h"
 #include "tempsensor.h"
@@ -24,6 +25,8 @@ public:
     TempSensor m_mash_lower_temp;
     TempSensor m_mash_upper_temp;
     TempSensor m_boil_temp;
+
+    BrewSession *m_session_p;
 
     Pid m_hlt_pid;
     Pid m_mash_pid;
@@ -74,6 +77,11 @@ Relay *Controller::WortPump()
     return &d->m_wort_pump;
 }
 
+BrewSession *Controller::Session()
+{
+    return d->m_session_p;
+}
+
 Controller::Data::Data() :
     m_hlt_element(27, "hlt"),
     m_boil_element(26, "boil"),
@@ -83,6 +91,7 @@ Controller::Data::Data() :
     m_mash_lower_temp(0, 1),
     m_mash_upper_temp(0, 2),
     m_boil_temp(0, 3),
+    m_session_p(new BrewSession()),
     m_hlt_pid("hlt", &m_hlt_temp, &m_hlt_element),
     m_mash_pid("mash", &m_mash_lower_temp, &m_hlt_element),
     m_boil_pid("boil", &m_boil_temp, &m_boil_element)

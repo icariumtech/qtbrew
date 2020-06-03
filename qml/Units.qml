@@ -17,4 +17,9 @@ QtObject {
 
     readonly property real largeMargin: 16 * dp
     readonly property real smallMargin: 8 * dp
+
+    function toF(c)
+    {
+        return c * 1.8 + 32
+    }
 }

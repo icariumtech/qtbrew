@@ -8,6 +8,7 @@ namespace Brewing
 
 class TempSensor;
 class Relay;
+class BrewSession;
 
 class Controller : public QObject
 {
@@ -24,6 +25,8 @@ public:
 
     Relay *WaterPump();
     Relay *WortPump();
+
+    BrewSession *Session();
 
 private:
     class Data;

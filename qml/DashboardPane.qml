@@ -16,25 +16,6 @@ Item {
         spacing: Units.largeMargin
 
         RowLayout {
-            id: processPane
-            opacity: 0
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            spacing: Units.largeMargin
-
-            BrewSteps {
-                Layout.minimumWidth: hltsetpoint.width
-                Layout.fillHeight: true
-            }
-
-            Pane {
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                Material.elevation: 6
-            }
-        }
-
-        RowLayout {
             id: setPoints
             Layout.fillWidth: true
             spacing: Units.largeMargin
@@ -54,6 +35,24 @@ Item {
                 Layout.fillWidth: true
                 title: "Boil Kettle"
                 temp: boil.temp
+            }
+        }
+
+        RowLayout {
+            id: processPane
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            opacity: 0
+            spacing: Units.largeMargin
+
+            BrewStepsPane {
+                Layout.fillHeight: true
+                Layout.minimumWidth: hltsetpoint.width
+            }
+
+            CurrentStepPane {
+                Layout.fillWidth: true
+                Layout.fillHeight: true
             }
         }
 
@@ -86,14 +85,14 @@ Item {
 
     SequentialAnimation {
         id: startAnimation
-        NumberAnimation { target: processPane; properties: "opacity"
-            duration: 500; to: 1; easing.type: Easing.OutBounce
-        }
         NumberAnimation { target: setPoints; properties: "opacity"
-            duration: 500; to: 1; easing.type: Easing.OutBounce
+            duration: 0; to: 1; easing.type: Easing.OutBounce
+        }
+        NumberAnimation { target: processPane; properties: "opacity"
+            duration: 0; to: 1; easing.type: Easing.OutBounce
         }
         NumberAnimation { target: pumps; properties: "opacity"
-            duration: 500; to: 1; easing.type: Easing.OutBounce
+            duration: 0; to: 1; easing.type: Easing.OutBounce
         }
     }
 }
