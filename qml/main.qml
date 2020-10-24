@@ -19,8 +19,15 @@ ApplicationWindow {
     Material.foreground: "#e7e5e5"
 
     header: Rectangle {
-        height: 40
+        height: 80 * dp
         color: Material.background
+
+        Text {
+            anchors.centerIn: parent
+            color: Material.foreground
+            text: brewSession.recipeName ?
+                      "Recipe: " + brewSession.recipeName : ""
+        }
     }
 
     Rectangle {

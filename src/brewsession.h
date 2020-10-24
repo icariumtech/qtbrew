@@ -14,6 +14,7 @@ class BrewSession : public QObject
 {
     Q_OBJECT
 
+    Q_PROPERTY(QString recipeName READ recipeName NOTIFY recipeNameChanged)
     Q_PROPERTY(bool running READ running NOTIFY runningChanged)
     Q_PROPERTY(bool finished READ finished NOTIFY finishedChanged)
     Q_PROPERTY(double setpoint READ setpoint NOTIFY setpointChanged )
@@ -24,6 +25,8 @@ class BrewSession : public QObject
 public:
     BrewSession();
     virtual ~BrewSession();
+
+    QString recipeName() const;
 
     QList<QObject*> steps();
 
@@ -38,6 +41,7 @@ public slots:
     void nextStep();
 
 signals:
+    void recipeNameChanged(QString name);
     void stepsChanged();
     void runningChanged(bool running);
     void finishedChanged(bool finished);

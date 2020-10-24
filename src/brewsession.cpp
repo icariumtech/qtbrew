@@ -10,6 +10,7 @@ namespace Brewing
 class BrewSession::Data
 {
 public:
+    QString m_recipe_name;
     BrewSteps m_steps;
     int m_current_idx;
     int m_seconds;
@@ -37,6 +38,8 @@ public:
 
 BrewSession::BrewSession() : QObject(), d(new Data)
 {
+    d->m_recipe_name = "Black Boot Porter";
+
     Step *mash_in_p = new Step("Mash In");
     mash_in_p->setSetpoint(73.9);
     mash_in_p->setTimerInterval(600);
@@ -68,6 +71,11 @@ BrewSession::BrewSession() : QObject(), d(new Data)
 BrewSession::~BrewSession()
 {
 
+}
+
+QString BrewSession::recipeName() const
+{
+    return d->m_recipe_name;
 }
 
 QList<QObject*> BrewSession::steps()
