@@ -14,7 +14,6 @@
         <file>qml/NavButton.qml</file>
         <file>qml/RecipePane.qml</file>
         <file>qml/DashboardPane.qml</file>
-        <file>qml/PageStack.qml</file>
         <file>images/dashboard.png</file>
         <file>images/information.png</file>
         <file>images/recipebook.png</file>

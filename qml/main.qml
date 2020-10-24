@@ -18,6 +18,11 @@ ApplicationWindow {
     Material.background: "#222831"
     Material.foreground: "#e7e5e5"
 
+    header: Rectangle {
+        height: 40
+        color: Material.background
+    }
+
     Rectangle {
         id: splash
         anchors.fill: parent
@@ -33,24 +38,13 @@ ApplicationWindow {
         id: mainPanel
         anchors.fill: parent
 
-        NavigationPane {
-            id: navigation
-            opacity: 0
-            width: 75 * dp
-            anchors.left: parent.left
-            anchors.top: parent.top
-            anchors.bottom: parent.bottom
-            onSwitchPage: {
-                pageStack.switchPage(idx)
+        StackView {
+            anchors.fill: parent
+            initialItem: DashboardPane {
+                id: dashBoard
+                anchors.fill: parent
+                anchors.margins: Units.largeMargin
             }
-        }
-
-        PageStack {
-            id: pageStack
-            anchors.left: navigation.right
-            anchors.top: parent.top
-            anchors.bottom: parent.bottom
-            anchors.right: parent.right
         }
 
         InputPanel {
@@ -94,12 +88,9 @@ ApplicationWindow {
         NumberAnimation { target: splash; properties: "opacity"
             duration: 1000; to: 0
         }
-        NumberAnimation { target: navigation; properties: "opacity"
-            duration: 1000; to: 1; easing.type: Easing.OutBounce
-        }
         Component.onCompleted: startAnimation.start()
         onStopped: {
-            pageStack.show()
+            dashBoard.show()
         }
     }
 }

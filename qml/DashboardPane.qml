@@ -86,13 +86,13 @@ Item {
     SequentialAnimation {
         id: startAnimation
         NumberAnimation { target: setPoints; properties: "opacity"
-            duration: 0; to: 1; easing.type: Easing.OutBounce
+            duration: 500; to: 1; easing.type: Easing.OutBounce
         }
         NumberAnimation { target: processPane; properties: "opacity"
-            duration: 0; to: 1; easing.type: Easing.OutBounce
+            duration: 500; to: 1; easing.type: Easing.OutBounce
         }
         NumberAnimation { target: pumps; properties: "opacity"
-            duration: 0; to: 1; easing.type: Easing.OutBounce
+            duration: 500; to: 1; easing.type: Easing.OutBounce
         }
     }
 }
